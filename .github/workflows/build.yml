@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  [push]
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout for CI 🛎️'
+        uses: actions/checkout@v4
+      - name: 'Set up JDK 17 📦'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: 'Build with Gradle 🏗️'
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: build 
+      - name: 'Upload Artifacts ⬆️'
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: target/*.jar
